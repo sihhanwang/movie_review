@@ -27,10 +27,12 @@ class GroupsController < ApplicationController
    def update
     @group = Group.find(params[:id])
 
-    @group.update(group_params)
-
-    redirect_to groups_path, notice: "修改成功"
-  end
+    if @group.update(group_params)
+        redirect_to groups_path, notice: "已新增"
+      else
+        render :edit
+      end
+    end
 
     def destroy
       @group = Group.find(params[:id])
