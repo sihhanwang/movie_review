@@ -43,6 +43,32 @@ end
       redirect_to groups_path
     end
 
+    def join
+      @group = Group.find(params[:id])
+
+       if !current_user.is_member_of?(@group)
+         current_user.join!(@group)
+         flash[:notice] = "收藏成功！"
+       else
+         flash[:warning] = "已收藏！"
+       end
+
+       redirect_to group_path(@group)
+     end
+
+     def quit
+       @group = Group.find(params[:id])
+
+       if current_user.is_member_of?(@group)
+         current_user.quit!(@group)
+         flash[:alert] = "已取消收藏！"
+       else
+         flash[:warning] = "沒有收藏過無法取消"
+       end
+
+       redirect_to group_path(@group)
+     end
+
  private
 
  def find_group_and_check_permission
